@@ -30,19 +30,56 @@
       min-height: 100vh;
     }
 
-    /* 其餘樣式保持不變（省略以節省篇幅，實際複製時請保留你原本全部 style） */
-    /* ...（你的原始 style 內容全部保留）... */
+    /* ── 導航 ── */
+    .navbar {
+      background: rgba(26,31,78,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 17px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    .status { font-size: 13px; display: flex; align-items: center; gap: 6px; }
+
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--sub);
+    }
+
+    .dot.online { background: var(--green); animation: pulse 2s infinite; }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; } 50% { opacity:0.4; }
+    }
+
+    /* 其餘樣式（完全保留你原本的全部 CSS） */
+    /* ...（以下為你原本完整的 style 內容，為了回應長度這裡省略顯示，但實際複製時請保留全部）... */
+    /* ── 完整 style 請直接使用你原本提供的全部內容 ── */
   </style>
 </head>
 <body>
-  <!-- 你的 HTML 結構完全不變（navbar、container、所有 card 等） -->
-  <!-- ...（你的原始 body 內容全部保留）... -->
+  <!-- 你的 HTML 結構完全不變（navbar、container、所有 card、按鈕等） -->
+  <!-- ...（請保留你原本提供的全部 body 內容）... -->
 
   <div class="toast" id="toast"></div>
 
   <script>
     // ═══════════════════════════════════════════
-    // 全域變數（新增 Cloudflare Workers 代理設定）
+    // 全域變數
     // ═══════════════════════════════════════════
     let glucoseChart = null;
     let glucoseHistory = { time: [], values: [] };
@@ -53,20 +90,21 @@
     let currentGlucose = 0;
     let aiPlatform = 'deepseek';
 
-    // === Cloudflare Workers 豆包代理設定 ===
-    // 請務必把下面網址改成你實際部署的 Worker 網址
-    const DOUBAO_WORKER_URL = 'https://doubaotest.janetshum0508.workers.dev/';   // ←←← 這裡改成你的真實網址
+    // === Cloudflare Workers 豆包代理設定（已填入你的真實網址） ===
+    // 這是前端唯一需要呼叫的代理地址，所有 API Key 都隱藏在 Worker 後端
+    const DOUBAO_WORKER_URL = 'https://doubaotest.janetshum0508.workers.dev';
 
     // ═══════════════════════════════════════════
     // 血糖狀態更新、走勢圖、Blynk 連接、食物上傳等函數（全部保持不變）
     // ═══════════════════════════════════════════
-    // （你的原始這些函數全部保留，我只修改下面兩個豆包相關函數）
+    // （你的原始這些函數全部保留）
 
     // ═══════════════════════════════════════════
-    // 食物分析 - 豆包代理版（已修改）
+    // 食物分析 - 豆包代理版（已更新）
     // ═══════════════════════════════════════════
     async function callDoubaoFood(apiKey) {
       try {
+        // 使用 Cloudflare Workers 代理呼叫豆包 API（解決 CORS + 隱藏 Key）
         const response = await fetch(`${DOUBAO_WORKER_URL}/api/doubao`, {
           method: 'POST',
           headers: {
@@ -106,7 +144,7 @@
     }
 
     // ═══════════════════════════════════════════
-    // AI 血糖分析 - 豆包代理版（已修改）
+    // AI 血糖分析 - 豆包代理版（已更新）
     // ═══════════════════════════════════════════
     async function callDoubaoBlynk(type, apiKey, customQ = null) {
       try {
@@ -119,6 +157,7 @@
           ? `用戶問題：${customQ}\n當前血糖：${glucose} mg/dL\n請用繁體中文回答。`
           : `血糖分析\n\n當前血糖：${glucose} mg/dL\n今日平均：${avg} mg/dL\n分析類型：${type}\n\n請用繁體中文提供專業健康建議，內容要具體實用。`;
 
+        // 使用 Cloudflare Workers 代理呼叫豆包 API
         const response = await fetch(`${DOUBAO_WORKER_URL}/api/doubao`, {
           method: 'POST',
           headers: {
@@ -145,7 +184,7 @@
       }
     }
 
-    // 其餘函數（simulateFoodAnalysis、callDeepSeekFood、callDeepSeekBlynk、runBlynkAI、askBlynkAI 等）全部保持不變
+    // 其餘函數（simulateFoodAnalysis、callDeepSeekFood、callDeepSeekBlynk 等）全部保持不變
     // （你的原始程式碼繼續保留）
 
     // ═══════════════════════════════════════════
