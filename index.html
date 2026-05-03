@@ -1,3 +1,20 @@
+<button onclick="callDoubao()">用豆包 AI 解答</button>
+
+<script>
+async function callDoubao() {
+  const response = await fetch('/api/doubao', {  // ← 你自己的代理地址
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: '這題的詳細解答是？' })
+  });
+  const data = await response.json();
+  console.log(data);  // 顯示答案
+}
+</script>
+
+
+
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
