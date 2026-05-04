@@ -1370,41 +1370,6 @@
       setTimeout(() => startDemo(), 500);
     });
   </script>
-<!-- 你原本所有网页代码 -->
-
-<!-- ==========在这里粘贴AI代码========== -->
-<textarea id="userInput" placeholder="请输入血糖相关问题"></textarea>
-<button onclick="askDoubao()">询问豆包AI</button>
-<div id="aiReply" style="border:1px solid #ccc;padding:10px;margin-top:10px;min-height:80px;"></div>
-
-<script>
-const API_URL = "https://free.doubaoapi.com/v1/chat";
-
-async function askDoubao() {
-  const question = document.getElementById("userInput").value;
-  const resDom = document.getElementById("aiReply");
-  resDom.innerText = "AI分析中...";
-
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "doubao-lite",
-        prompt: question
-      })
-    });
-
-    const data = await res.json();
-    resDom.innerText = data.content;
-  } catch (e) {
-    resDom.innerText = "请求失败，请稍后重试";
-    console.error(e);
-  }
-</script>
-<!-- ================================= -->
   
 </body>
 </html>
