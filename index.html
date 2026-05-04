@@ -1327,21 +1327,19 @@
           ? `用戶問題：${customQ}\n當前血糖：${glucose} mg/dL\n請用繁體中文回答。`
           : `血糖分析\n\n當前血糖：${glucose} mg/dL\n今日平均：${avg} mg/dL\n分析類型：${type}\n\n請用繁體中文提供專業健康建議，內容要具體實用。`;
 
-        const response = await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-            model: 'doubao-pro',
-            messages: [
-              { role: 'system', content: '你是專業的糖尿病健康顧問，用繁體中文回答。' },
-              { role: 'user', content: userPrompt }
-            ],
-            max_tokens: 800
-          })
-        });
+        const response = await fetch("https://ark.cn-beijing.volces.com/api/v3/chat/completions", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${apiKey}`
+  },
+  body: JSON.stringify({
+    model: "doubao-seed-1-6-vision-250815",   // ← 確保一致
+    messages: [ ... ],
+    temperature: 0.7,
+    // 其他參數保持不變
+  })
+})
 
         if (!response.ok) throw new Error('API error');
         const result = await response.json();
